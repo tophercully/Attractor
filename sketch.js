@@ -46,7 +46,7 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
   //p.noSmooth()
   //noSmooth()
   //smooth()
-  p.pixelDensity(5)
+  //p.pixelDensity(5)
 }
 
 function draw() {
