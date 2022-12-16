@@ -7,6 +7,7 @@ varying vec2 vTexCoord;
 
 //textures and uniforms from p5
 uniform sampler2D p;
+uniform sampler2D c;
 uniform vec2 u_resolution;
 uniform float seed;
 uniform vec3 bgc;
@@ -55,18 +56,23 @@ void main() {
   st.y = 1.0 - st.y;
 
   //form noise
-  st.xy += (random(st.xy)*0.001)-0.0005;
+  //st.xy += (random(st.xy)*0.001)-0.0005;
   float warp = map(noise(seed+st.xy*5.0), 0.0, 1.0, -0.005, 0.005);
   //st.xy += warp;
 
-  vec4 texP = texture2D(p, st);
-
-  //color noise
-  float noiseGray = random(st.xy)*0.25;
-
   vec3 color = vec3(0.0);
   vec3 final = vec3(0.0);
-  color = vec3(texP.r, texP.g, texP.b);
+  vec4 texP = texture2D(p, st);
+  vec4 texC = texture2D(c, st);
+  vec2 lum = vec2((texP.r + texP.g + texP.b)/3.0, (texP.r + texP.g + texP.b)/3.0);
+  vec4 colVal = texture2D(c, lum);
+  color = colVal.rgb;
+
+  //color noise
+  float noiseGray = random(st.xy)*0.05;
+
+
+  //color = vec3(texP.r, texP.g, texP.b);
 
   //Draw margin
   float margX = marg;

@@ -209,6 +209,7 @@ for (let i = 0; i < pal.length-1; i++) {
 //Combine palettes and shuffle that full palette
 fullPal = [].concat(pal, darkerPal, lighterPal);
 truePal = shuff(fullPal);
+hilo = [bgc, frameCol]
 
 //Pass our palette back to the CSS spinner
 let root = document.documentElement;

@@ -1,6 +1,6 @@
 w= 1200
 h = 1500
-marg = w*0.1
+marg = w*0.025
 
 let shade;
 function preload() {
@@ -10,6 +10,13 @@ function preload() {
 //declarations
 
 //parameters
+numColors = randomInt(2, truePal.length)
+tiers = 2
+
+xShadow = fxrand()
+yShadow = fxrand()
+shadowCol = chroma(125).alpha(0.5).hex()
+raised = randomVal(10, 400)
 
 function setup() {
   var isMobile = false; //initiate as false
@@ -37,8 +44,14 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
 
 function draw() {
   background(bgc)
+  p.background('white')
 
+  gradLUT()
   //Sketch
+  p.stroke(bgc)
+  p.strokeWeight(5)
+  p.fill(frameCol)
+  bodies()
 
 
   //Post processing
@@ -47,6 +60,7 @@ function draw() {
    shader(shade)
    shade.setUniform("u_resolution", [w, h]);
    shade.setUniform("p", p);
+   shade.setUniform("c", c);
    shade.setUniform("seed", randomVal(0, 10));
    shade.setUniform("marg", map(marg, 0, w, 0, 1));
    shade.setUniform("bgc", [
