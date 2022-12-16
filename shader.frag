@@ -10,6 +10,7 @@ uniform sampler2D p;
 uniform sampler2D c;
 uniform vec2 u_resolution;
 uniform float seed;
+uniform bool textured;
 uniform vec3 bgc;
 uniform float marg;
 
@@ -47,17 +48,49 @@ float noise (in vec2 st) {
             (d - b) * u.x * u.y;
 }
 
+#define OCTAVES 6
+float fbm(in vec2 st){
+    // Initial values
+    float value=0.;
+    float amplitude=.5;
+    float frequency=0.;
+    //
+    // Loop of octaves
+    for(int i=0;i<OCTAVES;i++){
+        value+=amplitude*noise(st);
+        st*=5.0;
+        amplitude*=.5;
+    }
+    return value;
+}
+
+mat2 rotate(float angle){
+    return mat2(cos(angle),-sin(angle),sin(angle),cos(angle));
+}
+
 void main() {
   vec2 uv = vTexCoord*u_resolution;
   vec2 st = vTexCoord;
   vec2 stB = vTexCoord;
+  vec2 stPaper = vTexCoord;
+
+
 
   //flip the upside down image
   st.y = 1.0 - st.y;
 
+  stPaper.y*= 10.0;
+  stPaper.x*= 1.0;
+  stPaper.xy *= 150.0;
+  stPaper.xy *= rotate(0.7853981633974483);
+
   //form noise
   //st.xy += (random(st.xy)*0.001)-0.0005;
   float warp = map(noise(seed+st.xy*5.0), 0.0, 1.0, -0.005, 0.005);
+  float warpPaper = map(fbm(seed+stPaper.xy), 0.0, 1.0, -0.002, 0.002);
+  //st.xy += warp;
+  //st.xy += warpPaper;
+  stB.xy += warpPaper;
   //st.xy += warp;
 
   vec3 color = vec3(0.0);
@@ -69,7 +102,15 @@ void main() {
   color = colVal.rgb;
 
   //color noise
-  float noiseGray = random(st.xy)*0.05;
+  float noiseGray = random(st.xy)*0.0;
+
+  //stPaper.xy *= rotate(0.7853981633974483*2.0);
+    float damageThresh = fbm(seed+stPaper.xy);
+    float damageDark = 1.0-damageThresh;
+    float accentNoise = noise(seed+stPaper.xy*1000.0);
+
+    color+= step(0.6, damageThresh)*0.0025;
+    //color-= step(0.6, damageDark)*0.0025;
 
 
   //color = vec3(texP.r, texP.g, texP.b);
@@ -81,6 +122,10 @@ void main() {
     color = vec3(bgc.r, bgc.g, bgc.b);
   }
 
+  if(textured == true) {
+    color+= step(0.6, damageThresh)*0.02;
+    color-= step(0.6, damageDark)*0.02;
+  }
 
   gl_FragColor = vec4(color+noiseGray, 1.0);
 }

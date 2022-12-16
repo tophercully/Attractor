@@ -1,6 +1,6 @@
 w= 1200
 h = 1500
-marg = w*0.025
+marg = w*randomVal(0.025, 0.15)
 
 let shade;
 function preload() {
@@ -8,15 +8,18 @@ function preload() {
 }
 
 //declarations
+textured = true
+shadeSeed = randomVal(0, 10)
 
 //parameters
-numColors = randomInt(2, truePal.length)
-tiers = 2
+numColors = randomInt(4, truePal.length)
+tiers = 1
 
 xShadow = fxrand()
 yShadow = fxrand()
-shadowCol = chroma(125).alpha(0.5).hex()
+shadowCol = chroma(125).alpha(0.25).hex()
 raised = randomVal(10, 400)
+circ = randomInt(0, 1)
 
 function setup() {
   var isMobile = false; //initiate as false
@@ -37,31 +40,38 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
   angleMode(DEGREES)
   p.angleMode(DEGREES)
   c.angleMode(DEGREES)
-  noLoop()
-  p.noLoop()
-  c.noLoop()
+  //noLoop()
+  //p.noLoop()
+  //c.noLoop()
+  //p.noSmooth()
+  //noSmooth()
+  //smooth()
+  p.pixelDensity(5)
 }
 
 function draw() {
-  background(bgc)
-  p.background('white')
 
-  gradLUT()
-  //Sketch
-  p.stroke(bgc)
-  p.strokeWeight(5)
-  p.fill(frameCol)
-  bodies()
+
+  if(frameCount == 1) {
+    background(bgc)
+    p.background('white')
+    gradLUT()
+    //Sketch
+    p.stroke(bgc)
+    p.fill(frameCol)
+    bodies()
+  }
 
 
   //Post processing
-   copy(p, 0, 0, w, h, 0, 0, w, h)
+   //copy(p, 0, 0, w, h, 0, 0, w, h)
    bgc = color(bgc)
    shader(shade)
    shade.setUniform("u_resolution", [w, h]);
    shade.setUniform("p", p);
    shade.setUniform("c", c);
-   shade.setUniform("seed", randomVal(0, 10));
+   shade.setUniform("seed", shadeSeed);
+   shade.setUniform("textured", textured);
    shade.setUniform("marg", map(marg, 0, w, 0, 1));
    shade.setUniform("bgc", [
      bgc.levels[0] / 255,
@@ -70,6 +80,8 @@ function draw() {
    ]);
 
    rect(0, 0, w, h)
+   if(frameCount == 1) {
+     fxpreview()
+   }
 
-   fxpreview()
 }

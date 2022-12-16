@@ -24,7 +24,7 @@ bgNames = [
   "Raisin Black",
 ];
 //Background color parameters
-bgNum = randomInt(0, 9);
+bgNum = 5//randomInt(0, 9);
 bgc = bgCols[bgNum];
 bgName = bgNames[bgNum];
 
@@ -159,6 +159,23 @@ const oilPastel = [
 
 const popper = ["#F5D365", "#E66C64", "#92BCC8", "#4F7C9A", frameCol];
 
+const vint = [
+  "#E5322B",
+  "#509BC4",
+  "#FFBF31",
+  "#457543",
+  "#FBEFE0",
+  "#1F201F"
+]
+
+const burn = [
+  "#00b4e2",
+  "#fd4f92",
+  "#ff7b89",
+  "#ffa070",
+  "#ffd403",
+
+]
 const pals = [source, shepard, toyBlocks, mcWoot, soft, jazzy, ceramic, oilPastel, mcNay, oKeefe, flowerMarket, oilPaint];
 
 const palNames = [
@@ -176,9 +193,16 @@ const palNames = [
   "Oil Paint"
 ];
 
+newPals = [
+  source,
+  toyBlocks,
+  vint,
+  burn
+]
+
 //Palette parameters
-palNum = randomInt(0, pals.length-1);
-pal = toyBlocks//pals[palNum];
+palNum = randomInt(0, newPals.length-1);
+pal = newPals[palNum];
 palName = palNames[palNum];
 
 console.log(palName)
@@ -208,7 +232,7 @@ for (let i = 0; i < pal.length-1; i++) {
 
 //Combine palettes and shuffle that full palette
 fullPal = [].concat(pal, darkerPal, lighterPal);
-truePal = shuff(fullPal);
+truePal = shuff(pal);
 hilo = [bgc, frameCol]
 
 //Pass our palette back to the CSS spinner
