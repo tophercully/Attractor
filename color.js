@@ -24,7 +24,7 @@ bgNames = [
   "Raisin Black",
 ];
 //Background color parameters
-bgNum = 5//randomInt(0, 9);
+bgNum = 4//randomInt(0, 5);
 bgc = bgCols[bgNum];
 bgName = bgNames[bgNum];
 
@@ -160,11 +160,11 @@ const oilPastel = [
 const popper = ["#F5D365", "#E66C64", "#92BCC8", "#4F7C9A", frameCol];
 
 const vint = [
-  "#E5322B",
-  "#509BC4",
-  "#FFBF31",
+  "#F9F2ED",
+  "#3AB0FF",
+  "#FFB562",
   "#457543",
-  "#FBEFE0",
+  "#F87474",
   "#1F201F"
 ]
 
@@ -176,6 +176,104 @@ const burn = [
   "#ffd403",
 
 ]
+
+
+const creamsicle = [
+  "#FF731D",
+  "#FFF7E9",
+  "#5F9DF7",
+  "#1746A2",
+]
+
+const bau = [
+  "#0461B8",
+  "#F1230D",
+  "#FAB304",
+  "#E4D6C2",
+  "#1D1F22",
+]
+
+const bauB = [
+  "#E12122",
+  "#1D1F22",
+  "#30475E",
+  "#F7F0DF",
+  "#8ED081",
+  "#976391"
+]
+
+const purp = [
+  "#F07DEA",
+  "#A460ED",
+  "#9FC9F3",
+  "#EEEEEE",
+  "#1F201F",
+  "#A2DE96"
+]
+
+const elliot = [
+  "#E73542",
+  "#F6A026",
+  "#2CA8C4",
+  "#EE7140",
+  "#289C5B",
+  "#F5E2CC",
+  "#161117"
+]
+
+const camp = [
+  "#F43F6C",
+  "#FCCA39",
+  "#54B55B",
+  "#9D4E9A",
+  "#453D8A",
+  "#DEEFEC",
+  "#161117"
+]
+
+const test = [
+  '#564138',
+  '#2e86ab',
+  '#f6f5ae',
+  '#f5f749',
+  '#f24236',
+  '#ff6b6c',
+  '#eb5e28',
+  '#c8b8db',
+  '#c98686'
+]
+
+const test2 = [
+  "#e71d36",
+  "#af4319",
+  "#772014",
+  "#3f220f",
+  "#19180a",
+  "#011627",
+  "#41ead4",
+  "#fdfffc",
+  "#ff9f1c"
+]
+const test3 = [
+  "#adc9ed",
+"#de8209",
+"#8bfccb",
+"#bd6c8f",
+"#c9266d",
+"#3a5c8a",
+"#55cf9a",
+"#0f8c56",
+"#9c713a",
+frameCol,
+bgc
+]
+
+
+
+
+
+
+
 const pals = [source, shepard, toyBlocks, mcWoot, soft, jazzy, ceramic, oilPastel, mcNay, oKeefe, flowerMarket, oilPaint];
 
 const palNames = [
@@ -195,15 +293,28 @@ const palNames = [
 
 newPals = [
   source,
-  toyBlocks,
+  bau,
+  bauB,
   vint,
-  burn
+  //burn,
+  //purp,
+  elliot
+]
+
+newPalNames = [
+  'Source',
+  'Bau',
+  'BauB',
+  'Vint',
+  //'Burn',
+  //'Purp',
+  "Elliot"
 ]
 
 //Palette parameters
 palNum = randomInt(0, newPals.length-1);
 pal = newPals[palNum];
-palName = palNames[palNum];
+palName = newPalNames[palNum];
 
 console.log(palName)
 

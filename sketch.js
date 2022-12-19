@@ -1,6 +1,6 @@
 w= 1200
 h = 1500
-marg = w*randomVal(0.025, 0.15)
+marg = w*0.025//randomVal(0.025, 0.15)
 
 let shade;
 function preload() {
@@ -12,14 +12,26 @@ textured = true
 shadeSeed = randomVal(0, 10)
 
 //parameters
-numColors = randomInt(4, truePal.length)
+numColors = truePal.length//randomInt(4, truePal.length)
+numBodies = randomInt(2, 6)
 tiers = 1
+minDash = 2
+maxDash = randomVal(50, 200)
 
-xShadow = fxrand()
-yShadow = fxrand()
-shadowCol = chroma(125).alpha(0.25).hex()
-raised = randomVal(10, 400)
+xShadow = plusOrMin(randomVal(0.25, 1))
+yShadow = plusOrMin(randomVal(0.25, 1))
+blendCols = [bgc, frameCol, 'white']
+blendCol = blendCols[randomInt(0, 2)]
+
+raised = randomVal(50, 300)
 circ = randomInt(0, 1)
+
+type = 2//randomInt(1, 2)
+borderDens = randomInt(5, 20)
+tightness = randomVal(0.25, 1.25)
+maxW = randomInt(50, 200)
+
+maxWeight = map_range(numBodies, 2, 6, 50, 20)
 
 function setup() {
   var isMobile = false; //initiate as false
@@ -36,8 +48,10 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
   }
 
   p = createGraphics(w, h)
+  p2 = createGraphics(w, h)
   c = createGraphics(w, h)
   angleMode(DEGREES)
+  p2.angleMode(DEGREES)
   p.angleMode(DEGREES)
   c.angleMode(DEGREES)
   //noLoop()
@@ -55,11 +69,21 @@ function draw() {
   if(frameCount == 1) {
     background(bgc)
     p.background('white')
+    p2.background(bgc)
     gradLUT()
     //Sketch
     p.stroke(bgc)
     p.fill(frameCol)
+    //p.blendMode(SOFT_LIGHT)
+    p.curveTightness(tightness)
     bodies()
+    // p.translate(w/2, h/2)
+    // p.fill('black')
+    // decor = 1
+    // curveTri(0, -100, 100, 100, -100, 100)
+
+    //p2.copy(p, 100, 100, 500, 1000, 100, 100, 500, 1000)
+
   }
 
 

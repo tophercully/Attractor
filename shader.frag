@@ -73,6 +73,7 @@ void main() {
   vec2 st = vTexCoord;
   vec2 stB = vTexCoord;
   vec2 stPaper = vTexCoord;
+  vec2 stWave = vTexCoord;
 
 
 
@@ -84,13 +85,16 @@ void main() {
   stPaper.xy *= 150.0;
   stPaper.xy *= rotate(0.7853981633974483);
 
+
   //form noise
-  //st.xy += (random(st.xy)*0.001)-0.0005;
+  st.xy += (random(st.xy)*0.001)-0.0005;
   float warp = map(noise(seed+st.xy*5.0), 0.0, 1.0, -0.005, 0.005);
   float warpPaper = map(fbm(seed+stPaper.xy), 0.0, 1.0, -0.002, 0.002);
+  float wave = map(sin(st.x*600.0), -1.0, 1.0, -1.0/1000.0, 1.0/1000.0);
+  stWave.y += wave;
   //st.xy += warp;
   //st.xy += warpPaper;
-  stB.xy += warpPaper;
+  //stB.xy += warpPaper;
   //st.xy += warp;
 
   vec3 color = vec3(0.0);
@@ -98,11 +102,15 @@ void main() {
   vec4 texP = texture2D(p, st);
   vec4 texC = texture2D(c, st);
   vec2 lum = vec2((texP.r + texP.g + texP.b)/3.0, (texP.r + texP.g + texP.b)/3.0);
+
   vec4 colVal = texture2D(c, lum);
   color = colVal.rgb;
+  if(texP.rgb == bgc.rgb) {
+    color.rgb = bgc.rgb;
+  }
 
   //color noise
-  float noiseGray = random(st.xy)*0.0;
+  float noiseGray = map(random(stWave.xy), 0.0, 1.0, -0.0, 0.15);
 
   //stPaper.xy *= rotate(0.7853981633974483*2.0);
     float damageThresh = fbm(seed+stPaper.xy);
@@ -121,10 +129,17 @@ void main() {
   if(stB.x < margX || stB.x > 1.0-margX || stB.y < margY || stB.y > 1.0-margY) {
     color = vec3(bgc.r, bgc.g, bgc.b);
   }
+  float nWave = sin(stWave.y*1000.0);
+  float oppNWave = 1.0-nWave;
 
-  if(textured == true) {
-    color+= step(0.6, damageThresh)*0.02;
-    color-= step(0.6, damageDark)*0.02;
+
+  //color+= step(0.9, oppNWave)*0.025;
+
+  if(textured == true && texP.rgb == vec3(0.0)) {
+    color-= step(0.9, nWave)*0.03;
+
+    // color+= step(0.6, damageThresh)*0.015;
+    // color-= step(0.6, damageDark)*0.015;
   }
 
   gl_FragColor = vec4(color+noiseGray, 1.0);

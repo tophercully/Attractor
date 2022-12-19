@@ -35,13 +35,28 @@ function keyTyped() {
     save("img.png");
   }
   if (key === "t" || key === "T") {
-    textured = false
+    if(textured == false) {
+      textured = true
+    } else if(textured == true) {
+      textured = false
+    }
     shade.setUniform("textured", textured)
   }
 }
 
 function randColor() {
   return chroma(truePal[randomInt(0, truePal.length-1)]).saturate(0).hex()
+}
+
+function plusOrMin(x) {
+  n = fxrand()
+  if(n < 0.5) {
+    posNeg = 1
+  } else {
+    posNeg = -1
+  }
+
+  return x*posNeg
 }
 
 function angBetween(x1, y1, x2, y2) {
@@ -65,49 +80,66 @@ function getTriangleCentroid(arr){
 
 
 function bodies() {
-  numBodies = randomInt(2, 10)
+
   if(numBodies == 2) {
-    gap = randomVal(3, 5)
+    gap = randomVal(3, 15)
   } else {
-    gap = randomVal(2, 4)
+    gap = randomVal(2, 10)
   }
 
   startAng = randomVal(0, 360)
   ang = 360/numBodies
   padding = randomVal(-300, 300)
-  skew = randomVal(-w/4, w/4)
+  skew = randomVal((-w+(marg*2))/4, (w+(marg*2))/4)
   backSkew = randomVal(-ang, ang)
+  triLength = 3
 
-  center = createVector(randomVal(marg*2, w-(marg*2)), randomVal(marg*2, h-(marg*2)))
-  baseA = ptFromAng(w/2, h/2, (-ang+backSkew)/gap, -w*3)
-  baseB = ptFromAng(w/2, h/2, (ang+backSkew)/gap, -w*3)
+  center = createVector(w/2+randomVal(-300, 300), h/2+randomVal(-300, 300))//createVector(randomVal(marg*2, w-(marg*3)), randomVal(marg*2, h-(marg*3)))
+  baseA = ptFromAng(w/2, h/2, (-ang+backSkew)/gap, -w*triLength)
+  baseB = ptFromAng(w/2, h/2, (ang+backSkew)/gap, -w*triLength)
 
-  p.strokeCap(SQUARE)
+  nCap = fxrand()
+  if(nCap < 0.5) {
+    p.strokeCap(SQUARE)
+  } else {
+    p.strokeCap(SQUARE)
+  }
+  p.strokeJoin(ROUND)
 
   for(let i = 0; i < numBodies; i++) {
+    decor = 1//randomInt(0, 1)
+    p.fill(chroma(randomVal(0, 255)).alpha(0.2+randomVal(-0.001, 0.001)).hex())
+    p.stroke(chroma(randomVal(0, 255)).alpha(0.3+randomVal(-0.001, 0.001)).hex())
 
-    p.fill(chroma(randomVal(0, 255)).alpha(0.1).hex())
-    p.stroke(chroma(randomVal(0, 255)).alpha(0.5).hex())
     p.push()
     p.translate(center.x, center.y)
-    p.rotate(startAng+(ang*i)+randomVal(-ang*0.2, ang*0.2))
+    p.rotate(startAng+(ang*i)+randomVal(-ang*0.3, ang*0.3))
     p.translate(-center.x, -center.y)
-    numLayers = 10
+    numLayers = borderDens
     for(let i = 0; i < numLayers; i++) {
       xShadow = fxrand()
       yShadow = fxrand()
-      dashSize = randomVal(20, 400)
-      p.strokeWeight(randomVal(0.5, 10))
+      shadowCol = bgc//chroma(randomVal(0, 255)).alpha((0.5)+randomVal(-0.001, 0.001)).hex()
+      raise = raised//randomVal(-raised, raised)//randomVal(-raised, raised)//(map(i, 0, numLayers, 0, raised))*randomVal(0.6, 1.4)
+      dashSize = randomVal(minDash, maxDash)
+      p.strokeWeight(randomVal(0.5, maxWeight))
       p.drawingContext.setLineDash([dashSize, dashSize])
-      p.drawingContext.shadowOffsetX = map(xShadow, -1, 1, -raised, raised);
-      p.drawingContext.shadowOffsetY = map(yShadow, -1, 1, -raised, raised);
+      p.drawingContext.shadowOffsetX = map(xShadow, -1, 1, -raise, raise);
+      p.drawingContext.shadowOffsetY = map(yShadow, -1, 1, -raise, raise);
       p.drawingContext.shadowBlur = 0;
       p.drawingContext.shadowColor = shadowCol;
       if(i == 0 && circ == 1) {
-        p.circle(center.x, center.y, abs(padding)+abs(skew))
+        p.circle(center.x, center.y, center.dist(createVector(center.x+skew, center.y+padding))*randomVal(1, 2))
       }
 
-      p.triangle(center.x+skew, center.y+padding, baseA.x, baseA.y, baseB.x, baseB.y)
+      if(type == 1) {
+        tri(center.x+skew, center.y+padding, baseA.x, baseA.y, baseB.x, baseB.y)
+      } else if(type == 2) {
+        curveTri(center.x+skew, center.y+padding, baseA.x, baseA.y, baseB.x, baseB.y)
+
+      }
+
+
     }
     //newTri(center.x+skew, center.y+padding, baseA.x, baseA.y, baseB.x, baseB.y)
     p.pop()
@@ -134,11 +166,35 @@ scl = 100
 }
 
 
-function tri(xA, yA, xB, yB, xC, yC) {
+function curveTri(xA, yA, xB, yB, xC, yC) {
+  if(decor == 1) {
+    circle(xA, yA, randomVal(10, 100))
+  }
 p.beginShape()
-p.vertex(xB+randomVal(-300, 300), yB+randomVal(300, -300))
-p.bezierVertex(xB, yB, xC, yC, xA, yA)
+//p.vertex(xB+randomVal(-300, 300), yB+randomVal(300, -300))
+p.curveVertex(xB, yB)
+p.curveVertex(xC, yC)
+p.curveVertex(xA, yA)
+p.curveVertex(xB, yB)
+p.curveVertex(xC, yC)
+
 p.endShape(CLOSE)
+
+
+}
+
+function tri(xA, yA, xB, yB, xC, yC) {
+  if(decor == 1) {
+    p.circle(xA, yA, randomVal(10, 200))
+  }
+p.beginShape()
+//p.vertex(xB+randomVal(-300, 300), yB+randomVal(300, -300))
+p.vertex(xC, yC)
+p.vertex(xB, yB)
+p.vertex(xA, yA)
+p.endShape(CLOSE)
+
+
 }
 
 function newTri(xA, yA, xB, yB, xC, yC) {
@@ -147,20 +203,59 @@ function newTri(xA, yA, xB, yB, xC, yC) {
   ptC = createVector(xC, yC)
   centroid = getTriangleCentroid([ptA, ptB, ptC])
 
-
+  inc = 360/3
 
   p.push()
   p.translate(centroid.x, centroid.y)
   p.beginShape()
-  for(let i = -90; i < 360-90; i+=360/360) {
+  for(let i = inc-45; i < 360+inc-45; i+=inc) {
     sineI = map(i, 0, 360/3, 0, 360)
     siner = map(sin(i*3), -1, 1, -1, 1)
     radY = ptA.dist(centroid)
     radX = ptB.dist(ptC)
-    mod = map(pow(siner, 2), 0, pow(1, 2), 0.73, 1)
-    x = cos(i)*radX*mod
-    y = sin(i)*radY*mod
-    p.vertex(x, y)
+    mod = 1//map(abs(sin(sineI/2)), 0, 1, 0.75, 1)//map((cos(PI / 3) / cos((sineI % (TAU / 3)) - PI / 3)), 0.9, 1, 0, 1)
+    //console.log(mod)
+    x = cos(i)*(radX*mod)/2
+    y = sin(i)*(radY*mod)
+    if(mod > 0.9) {
+      p.circle(x, y, 100)
+    }
+    if(i == 0) {
+      p.vertex(x, y)
+    }
+    p.curveVertex(x, y)
+  }
+  p.endShape(CLOSE)
+  p.pop()
+}
+
+function tp(startX, startY, wid, hei) {
+  offMax = 0//100
+  offX = 0//randomInt(-100, 100)
+  offY = 0//randomInt(-offMax, offMax)
+  p2.copy(p, startX, startY, 1, h, startX+offX, startY+offY, wid, hei)
+}
+
+function copier() {
+  columns = 3
+  nums = shuff([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  cellW = (w-(marg*2))/columns
+  for(let i = 0; i < w; i++) {
+    sineI = map(i, 0, w, 0, 360)
+    hei = map(cos(sineI), -1, 1, 0, h-(marg*2))
+    tp(i, marg, 1, hei)
+  }
+}
+
+function accentShape(x, y, r, bs) {
+  numSides = 3
+  p.push()
+  p.translate(x, y)
+  p.beginShape()
+  for(let i = bs+90; i < 360+bs+90; i += 360/numSides) {
+    xc = cos(i)*r/2
+    yc = sin(i)*r/2
+    p.vertex(xc, yc)
   }
   p.endShape(CLOSE)
   p.pop()
