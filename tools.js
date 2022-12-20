@@ -82,14 +82,14 @@ function getTriangleCentroid(arr){
 function bodies() {
 
   if(numBodies == 2) {
-    gap = randomVal(3, 15)
+    gap = randomVal(3, 5)
   } else {
-    gap = randomVal(2, 10)
+    gap = randomVal(2, 3)
   }
 
   startAng = randomVal(0, 360)
   ang = 360/numBodies
-  padding = randomVal(-300, 300)
+  padding = randomVal(0, 200)
   skew = randomVal((-w+(marg*2))/4, (w+(marg*2))/4)
   backSkew = randomVal(-ang, ang)
   triLength = 3
@@ -128,8 +128,9 @@ function bodies() {
       p.drawingContext.shadowOffsetY = map(yShadow, -1, 1, -raise, raise);
       p.drawingContext.shadowBlur = 0;
       p.drawingContext.shadowColor = shadowCol;
-      if(i == 0 && circ == 1) {
-        p.circle(center.x, center.y, center.dist(createVector(center.x+skew, center.y+padding))*randomVal(1, 2))
+      circR = center.dist(createVector(center.x+skew, center.y+padding))*randomVal(1, 2)
+      if(i == 0 && circ == 1 && padding > 0) {
+        p.circle(center.x, center.y, circR)
       }
 
       if(type == 1) {

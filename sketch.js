@@ -1,6 +1,6 @@
 w= 1200
 h = 1500
-marg = w*0.025//randomVal(0.025, 0.15)
+marg = w*randomVal(0.025, 0.1)
 
 let shade;
 function preload() {
@@ -13,7 +13,7 @@ shadeSeed = randomVal(0, 10)
 
 //parameters
 numColors = truePal.length//randomInt(4, truePal.length)
-numBodies = randomInt(2, 6)
+numBodies = randomInt(2, 8)
 tiers = 1
 minDash = 2
 maxDash = randomVal(50, 200)
@@ -24,11 +24,11 @@ blendCols = [bgc, frameCol, 'white']
 blendCol = blendCols[randomInt(0, 2)]
 
 raised = randomVal(50, 300)
-circ = randomInt(0, 1)
+circ = 1//randomInt(0, 1)
 
 type = 2//randomInt(1, 2)
-borderDens = randomInt(5, 20)
-tightness = randomVal(0.25, 1.25)
+borderDens = randomInt(10, 20)
+tightness = randomVal(0, 1.25)
 maxW = randomInt(50, 200)
 
 maxWeight = map_range(numBodies, 2, 6, 50, 20)

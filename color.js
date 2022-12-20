@@ -35,6 +35,7 @@ if (calcBgLum > 0.5) {
 } else if( calcBgLum < 0.5) {
   frameCol = 'white'; //white
 }
+hilo = [bgc, frameCol]
 
 //Palettes
 //Always include frameCol instead of black or white so our colors don't blend into bgc
@@ -221,38 +222,23 @@ const elliot = [
   "#161117"
 ]
 
-const camp = [
-  "#F43F6C",
-  "#FCCA39",
-  "#54B55B",
-  "#9D4E9A",
-  "#453D8A",
-  "#DEEFEC",
+const utah = [
+  '#004921',
+  '#F55002',
+  '#f88d22',
+  '#F5B49F',
+  '#fff0e0',
   "#161117"
 ]
 
-const test = [
-  '#564138',
-  '#2e86ab',
-  '#f6f5ae',
-  '#f5f749',
-  '#f24236',
-  '#ff6b6c',
-  '#eb5e28',
-  '#c8b8db',
-  '#c98686'
-]
+const camp = [
+  "#eb6424",
+  "#fa9500",
+  "#ffdac7",
+  "#babd8e",
+  "#7c690a",
+  "#212529"
 
-const test2 = [
-  "#e71d36",
-  "#af4319",
-  "#772014",
-  "#3f220f",
-  "#19180a",
-  "#011627",
-  "#41ead4",
-  "#fdfffc",
-  "#ff9f1c"
 ]
 const test3 = [
   "#adc9ed",
@@ -267,6 +253,47 @@ const test3 = [
 frameCol,
 bgc
 ]
+const pureMono = [
+  "#f8f9fa",
+  "#e9ecef",
+  "#dee2e6",
+  "#ced4da",
+  "#adb5bd",
+  "#6c757d",
+  "#495057",
+  "#343a40",
+  "#212529"
+]
+
+const neutral = [
+  "#582f0e",
+  "#7f4f24",
+  "#936639",
+  "#a68a64",
+  "#b6ad90",
+  "#c2c5aa",
+  "#a4ac86",
+  "#656d4a",
+  "#414833",
+  "#333d29"
+]
+
+const boho = [
+  "#ffedd8",
+  "#f3d5b5",
+  "#e7bc91",
+  "#d4a276",
+  "#bc8a5f",
+  "#a47148",
+  "#8b5e34",
+  "#6f4518",
+  "#603808",
+  "#adc9ed",
+  "#583101"
+]
+
+
+
 
 
 
@@ -298,7 +325,10 @@ newPals = [
   vint,
   //burn,
   //purp,
-  elliot
+  elliot,
+  pureMono,
+  utah,
+  camp
 ]
 
 newPalNames = [
@@ -308,12 +338,18 @@ newPalNames = [
   'Vint',
   //'Burn',
   //'Purp',
-  "Elliot"
+  "Elliot",
+  "Achromatic",
+  "Utah",
+  "Camp"
 ]
 
 //Palette parameters
+
 palNum = randomInt(0, newPals.length-1);
+otherPalNum = randomInt(0, newPals.length-1);
 pal = newPals[palNum];
+otherPal = newPals[otherPalNum];
 palName = newPalNames[palNum];
 
 console.log(palName)
@@ -344,7 +380,8 @@ for (let i = 0; i < pal.length-1; i++) {
 //Combine palettes and shuffle that full palette
 fullPal = [].concat(pal, darkerPal, lighterPal);
 truePal = shuff(pal);
-hilo = [bgc, frameCol]
+
+
 
 //Pass our palette back to the CSS spinner
 let root = document.documentElement;

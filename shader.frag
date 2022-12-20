@@ -87,14 +87,14 @@ void main() {
 
 
   //form noise
-  st.xy += (random(st.xy)*0.001)-0.0005;
+  //st.xy += (random(st.xy)*0.001)-0.0005;
   float warp = map(noise(seed+st.xy*5.0), 0.0, 1.0, -0.005, 0.005);
-  float warpPaper = map(fbm(seed+stPaper.xy), 0.0, 1.0, -0.002, 0.002);
+  float warpPaper = map(fbm(seed+stPaper.xy), 0.0, 1.0, -0.005, 0.005);
   float wave = map(sin(st.x*600.0), -1.0, 1.0, -1.0/1000.0, 1.0/1000.0);
   stWave.y += wave;
-  //st.xy += warp;
+  st.xy += warp;
   //st.xy += warpPaper;
-  //stB.xy += warpPaper;
+  stB.xy += warpPaper;
   //st.xy += warp;
 
   vec3 color = vec3(0.0);
@@ -135,8 +135,8 @@ void main() {
 
   //color+= step(0.9, oppNWave)*0.025;
 
-  if(textured == true && texP.rgb == vec3(0.0)) {
-    color-= step(0.9, nWave)*0.03;
+  if(textured == true) {
+    //color-= step(0.9, nWave)*0.03;
 
     // color+= step(0.6, damageThresh)*0.015;
     // color-= step(0.6, damageDark)*0.015;
