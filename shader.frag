@@ -56,16 +56,9 @@ void main() {
   vec2 uv = vTexCoord*u_resolution;
   vec2 st = vTexCoord;
   vec2 stB = vTexCoord;
-  vec2 stPaper = vTexCoord;
-  vec2 stWave = vTexCoord;
 
   //flip the upside down image
   st.y = 1.0 - st.y;
-
-  stPaper.y*= 10.0;
-  stPaper.x*= 0.5;
-  stPaper.xy *= 150.0;
-  stPaper.xy *= rotate(0.7853981633974483);
 
   //form noise
   if(st.x > 0.0) {
@@ -106,7 +99,7 @@ void main() {
     contrastMult = 1.1;
   }
    if(textured == true) {
-    noiseGray = map(random(stWave.xy), 0.0, 1.0, -0.09, 0.09);
+    noiseGray = map(random(st.xy), 0.0, 1.0, -0.09, 0.09);
   }
 
 
