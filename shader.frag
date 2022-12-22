@@ -81,20 +81,23 @@ void main() {
   st.y = 1.0 - st.y;
 
   stPaper.y*= 10.0;
-  stPaper.x*= 1.0;
+  stPaper.x*= 0.5;
   stPaper.xy *= 150.0;
   stPaper.xy *= rotate(0.7853981633974483);
 
 
   //form noise
-  //st.xy += (random(st.xy)*0.001)-0.0005;
+  if(st.x > 0.0) {
+    st.xy += map(random(st.xy), 0.0, 1.0, -0.0001, 0.0001);
+  }
+  
   float warp = map(noise(seed+st.xy*5.0), 0.0, 1.0, -0.005, 0.005);
   float warpPaper = map(fbm(seed+stPaper.xy), 0.0, 1.0, -0.005, 0.005);
   float wave = map(sin(st.x*600.0), -1.0, 1.0, -1.0/1000.0, 1.0/1000.0);
   stWave.y += wave;
   st.xy += warp;
   //st.xy += warpPaper;
-  stB.xy += warpPaper;
+  //stB.xy += warpPaper;
   //st.xy += warp;
 
   vec3 color = vec3(0.0);
@@ -110,15 +113,16 @@ void main() {
   }
 
   //color noise
-  float noiseGray = map(random(stWave.xy), 0.0, 1.0, -0.0, 0.15);
+ 
 
   //stPaper.xy *= rotate(0.7853981633974483*2.0);
     float damageThresh = fbm(seed+stPaper.xy);
     float damageDark = 1.0-damageThresh;
     float accentNoise = noise(seed+stPaper.xy*1000.0);
 
-    color+= step(0.6, damageThresh)*0.0025;
-    //color-= step(0.6, damageDark)*0.0025;
+    // color+= step(0.6, damageThresh)*0.01;
+    // color-= step(0.6, damageDark)*0.01;
+    //color+= step(0.5, accentNoise)*1.0;
 
 
   //color = vec3(texP.r, texP.g, texP.b);
@@ -132,15 +136,26 @@ void main() {
   float nWave = sin(stWave.y*1000.0);
   float oppNWave = 1.0-nWave;
 
-
   //color+= step(0.9, oppNWave)*0.025;
-
-  if(textured == true) {
-    //color-= step(0.9, nWave)*0.03;
-
-    // color+= step(0.6, damageThresh)*0.015;
-    // color-= step(0.6, damageDark)*0.015;
+  float noiseGray = 0.0;
+ 
+  float brightnessNow = (color.r, color.g, color.b)/3.0;
+  float blackPt = 0.1;
+  float whitePt = -0.2;
+  float contrastAdd = 0.0;
+  float contrastMult = 1.0;
+  if(st.y > 0.0) {
+    contrastAdd = map(brightnessNow, 0.0, 1.0, blackPt, whitePt);
+    contrastMult = 1.1;
   }
+   if(textured == true) {
+    //color-= step(0.9, nWave)*0.03;
+    //color+= step(0.65, damageThresh)*0.015;
+    // color-= step(0.65, damageDark)*0.015;
+    noiseGray = map(random(stWave.xy), 0.0, 1.0, -0.075, 0.075);
+  }
+  float avg = (color.r+color.g+color.b)/3.0;
+  final = vec3(avg, avg, avg);
 
-  gl_FragColor = vec4(color+noiseGray, 1.0);
+  gl_FragColor = vec4(((color.rgb*contrastMult)+contrastAdd)+noiseGray, 1.0);
 }

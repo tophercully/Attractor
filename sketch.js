@@ -12,26 +12,19 @@ textured = true
 shadeSeed = randomVal(0, 10)
 
 //parameters
-numColors = truePal.length//randomInt(4, truePal.length)
-numBodies = randomInt(2, 8)
+numColors = truePal.length
+numBodies = randomInt(2, 6)
 tiers = 1
-minDash = 2
-maxDash = randomVal(50, 200)
-
+minDash = 5
+maxDash = randomVal(50, 500)
 xShadow = plusOrMin(randomVal(0.25, 1))
 yShadow = plusOrMin(randomVal(0.25, 1))
-blendCols = [bgc, frameCol, 'white']
-blendCol = blendCols[randomInt(0, 2)]
-
 raised = randomVal(50, 300)
-circ = 1//randomInt(0, 1)
-
-type = 2//randomInt(1, 2)
-borderDens = randomInt(10, 20)
-tightness = randomVal(0, 1.25)
-maxW = randomInt(50, 200)
-
-maxWeight = map_range(numBodies, 2, 6, 50, 20)
+circRRatio = randomVal(0.25, 2)
+type = randomInt(1, 2)
+borderDens = randomInt(5, 20)
+tightness = randomVal(0, 1)
+maxWeight = randomInt(100, 600)
 
 function setup() {
   var isMobile = false; //initiate as false
@@ -48,42 +41,26 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
   }
 
   p = createGraphics(w, h)
-  p2 = createGraphics(w, h)
   c = createGraphics(w, h)
   angleMode(DEGREES)
-  p2.angleMode(DEGREES)
   p.angleMode(DEGREES)
   c.angleMode(DEGREES)
-  //noLoop()
-  //p.noLoop()
-  //c.noLoop()
-  //p.noSmooth()
-  //noSmooth()
-  //smooth()
-  //p.pixelDensity(5)
 }
 
 function draw() {
 
 
   if(frameCount == 1) {
+    //Prep
     background(bgc)
     p.background('white')
-    p2.background(bgc)
     gradLUT()
+
     //Sketch
     p.stroke(bgc)
     p.fill(frameCol)
-    //p.blendMode(SOFT_LIGHT)
     p.curveTightness(tightness)
     bodies()
-    // p.translate(w/2, h/2)
-    // p.fill('black')
-    // decor = 1
-    // curveTri(0, -100, 100, 100, -100, 100)
-
-    //p2.copy(p, 100, 100, 500, 1000, 100, 100, 500, 1000)
-
   }
 
 
@@ -106,6 +83,11 @@ function draw() {
    rect(0, 0, w, h)
    if(frameCount == 1) {
      fxpreview()
+     //save('attractorv05.png')
+   }
+
+   if(frameCount == 200) {
+    //window.location.reload();
    }
 
 }
