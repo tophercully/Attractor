@@ -32,7 +32,7 @@ function setLineDash(list) {
 
 function keyTyped() {
   if (key === "s" || key === "S") {
-    save("img.png");
+    save("Attractor.png");
   }
   if (key === "t" || key === "T") {
     if(textured == false) {

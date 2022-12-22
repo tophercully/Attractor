@@ -112,7 +112,7 @@ void main() {
     color.rgb = bgc.rgb;
   }
 
-  //color noise
+  
  
 
   //stPaper.xy *= rotate(0.7853981633974483*2.0);
@@ -137,6 +137,8 @@ void main() {
   float oppNWave = 1.0-nWave;
 
   //color+= step(0.9, oppNWave)*0.025;
+  
+  //color noise
   float noiseGray = 0.0;
  
   float brightnessNow = (color.r, color.g, color.b)/3.0;

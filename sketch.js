@@ -1,4 +1,4 @@
-w= 1200
+w = 1200
 h = 1500
 marg = w*randomVal(0.025, 0.1)
 
@@ -14,7 +14,6 @@ shadeSeed = randomVal(0, 10)
 //parameters
 numColors = truePal.length
 numBodies = randomInt(2, 6)
-tiers = 1
 minDash = 5
 maxDash = randomVal(50, 500)
 xShadow = plusOrMin(randomVal(0.25, 1))
@@ -25,6 +24,22 @@ type = randomInt(1, 2)
 borderDens = randomInt(5, 20)
 tightness = randomVal(0, 1)
 maxWeight = randomInt(100, 600)
+
+if(type == 1) {
+  bladeType = 'Beveled'
+} else {
+  bladeType = 'Rounded'
+}
+
+window.$fxhashFeatures = {
+"Palette": palName,
+"Blade Type": bladeType,
+"# Blades": numBodies,
+"Tightness": Math.round(map_range(tightness, 0, 1, 1, 10)),
+"Dash Weight": Math.round(map_range(maxWeight, 100, 600, 1, 10)),
+"Layer Density": borderDens,
+
+}
 
 function setup() {
   var isMobile = false; //initiate as false
@@ -83,11 +98,5 @@ function draw() {
    rect(0, 0, w, h)
    if(frameCount == 1) {
      fxpreview()
-     //save('attractorv06.png')
    }
-
-   if(frameCount == 200) {
-    //window.location.reload();
-   }
-
 }
