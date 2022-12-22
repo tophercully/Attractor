@@ -32,19 +32,6 @@ const shepard = [
   frameCol
 ];
 
- const flowerMarket = [
- '#4F4D5C',
- '#E4CDB3',
- '#833828',
- '#B27362',
- '#D7B4A8',
- '#DBAF64',
- '#9D5F00',
- '#B9BAAB',
- '#414A37',
- '#838D7F',
-]
-
 const bau = [
   "#1267b7",
   "#ec3e2b",
@@ -87,32 +74,57 @@ let pureMono = [
 
 
 
-const regulate = [
-  '#3F9CD5',
-  '#204f6d',
-  '#F18937',
-  '#e3b592',
-  '#F5F5F5',
-  '#1F1F1F'
-]
+const riso = [
+  '#F15060',
+  '#FF48B0',
+  '#FF6C2F',
+  //'#914E72',
+  '#FFB511',
+  '#FFE800',
+  //'#E3ED55',
+  '#00A95C',
+  //'#407060',
+  '#82D8D5',
+  //'#00838A',
+  '#0078BF',
+  '#3D5588',
+  '#000000',
+  ]
+  const wildberry = [
+    'black',
+    '#62A8E5',
+    '#BB76CF',
+    '#407060',
+    '#FF6C2F',
+    '#fff0e0',
+  ]
+  const vint = [
+    'black',
+    '#FDDEBD',
+    '#3255A4',
+    '#62A8E5',
+    '#FF8E91'
+  ]
 
 newPals = [
   source,
   bau,
-  regulate,
+  wildberry,
+  vint,
   shepard,
   elliot,
-  //pureMono,
+  pureMono,
   utah
 ]
 
 newPalNames = [
   'Source',
-  'Bau',
-  'Regulate',
+  'Haus',
+  'Wildberry',
+  'Vint',
   'Commander Shepard',
   "Elliot",
-  //"Achromatic",
+  "Achromatic",
   "Utah"
 ]
 

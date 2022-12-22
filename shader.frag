@@ -152,7 +152,7 @@ void main() {
     //color-= step(0.9, nWave)*0.03;
     //color+= step(0.65, damageThresh)*0.015;
     // color-= step(0.65, damageDark)*0.015;
-    noiseGray = map(random(stWave.xy), 0.0, 1.0, -0.075, 0.075);
+    noiseGray = map(random(stWave.xy), 0.0, 1.0, -0.09, 0.09);
   }
   float avg = (color.r+color.g+color.b)/3.0;
   final = vec3(avg, avg, avg);

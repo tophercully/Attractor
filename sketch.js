@@ -83,7 +83,7 @@ function draw() {
    rect(0, 0, w, h)
    if(frameCount == 1) {
      fxpreview()
-     //save('attractorv05.png')
+     //save('attractorv06.png')
    }
 
    if(frameCount == 200) {
