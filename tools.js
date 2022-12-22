@@ -42,6 +42,12 @@ function keyTyped() {
     }
     shade.setUniform("textured", textured)
   }
+  if (key === "p" || key === "P") {
+    pixelDensity(4)
+    redraw()
+    console.log('Print Quality')
+    save("AttractorPrintQuality.png");
+  }
 }
 
 function randColor() {

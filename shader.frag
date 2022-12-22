@@ -24,8 +24,6 @@ float random (vec2 st) {
         43758.5453123);
 }
 
-
-
 float noise (in vec2 st) {
     vec2 i = floor(st);
     vec2 f = fract(st);
@@ -48,21 +46,7 @@ float noise (in vec2 st) {
             (d - b) * u.x * u.y;
 }
 
-#define OCTAVES 6
-float fbm(in vec2 st){
-    // Initial values
-    float value=0.;
-    float amplitude=.5;
-    float frequency=0.;
-    //
-    // Loop of octaves
-    for(int i=0;i<OCTAVES;i++){
-        value+=amplitude*noise(st);
-        st*=5.0;
-        amplitude*=.5;
-    }
-    return value;
-}
+
 
 mat2 rotate(float angle){
     return mat2(cos(angle),-sin(angle),sin(angle),cos(angle));
@@ -75,8 +59,6 @@ void main() {
   vec2 stPaper = vTexCoord;
   vec2 stWave = vTexCoord;
 
-
-
   //flip the upside down image
   st.y = 1.0 - st.y;
 
@@ -85,23 +67,15 @@ void main() {
   stPaper.xy *= 150.0;
   stPaper.xy *= rotate(0.7853981633974483);
 
-
   //form noise
   if(st.x > 0.0) {
     st.xy += map(random(st.xy), 0.0, 1.0, -0.0001, 0.0001);
   }
   
   float warp = map(noise(seed+st.xy*5.0), 0.0, 1.0, -0.005, 0.005);
-  float warpPaper = map(fbm(seed+stPaper.xy), 0.0, 1.0, -0.005, 0.005);
-  float wave = map(sin(st.x*600.0), -1.0, 1.0, -1.0/1000.0, 1.0/1000.0);
-  stWave.y += wave;
   st.xy += warp;
-  //st.xy += warpPaper;
-  //stB.xy += warpPaper;
-  //st.xy += warp;
 
   vec3 color = vec3(0.0);
-  vec3 final = vec3(0.0);
   vec4 texP = texture2D(p, st);
   vec4 texC = texture2D(c, st);
   vec2 lum = vec2((texP.r + texP.g + texP.b)/3.0, (texP.r + texP.g + texP.b)/3.0);
@@ -112,32 +86,13 @@ void main() {
     color.rgb = bgc.rgb;
   }
 
-  
- 
-
-  //stPaper.xy *= rotate(0.7853981633974483*2.0);
-    float damageThresh = fbm(seed+stPaper.xy);
-    float damageDark = 1.0-damageThresh;
-    float accentNoise = noise(seed+stPaper.xy*1000.0);
-
-    // color+= step(0.6, damageThresh)*0.01;
-    // color-= step(0.6, damageDark)*0.01;
-    //color+= step(0.5, accentNoise)*1.0;
-
-
-  //color = vec3(texP.r, texP.g, texP.b);
-
   //Draw margin
   float margX = marg;
   float margY = margX*0.8;
   if(stB.x < margX || stB.x > 1.0-margX || stB.y < margY || stB.y > 1.0-margY) {
     color = vec3(bgc.r, bgc.g, bgc.b);
   }
-  float nWave = sin(stWave.y*1000.0);
-  float oppNWave = 1.0-nWave;
 
-  //color+= step(0.9, oppNWave)*0.025;
-  
   //color noise
   float noiseGray = 0.0;
  
@@ -151,13 +106,9 @@ void main() {
     contrastMult = 1.1;
   }
    if(textured == true) {
-    //color-= step(0.9, nWave)*0.03;
-    //color+= step(0.65, damageThresh)*0.015;
-    // color-= step(0.65, damageDark)*0.015;
     noiseGray = map(random(stWave.xy), 0.0, 1.0, -0.09, 0.09);
   }
-  float avg = (color.r+color.g+color.b)/3.0;
-  final = vec3(avg, avg, avg);
+
 
   gl_FragColor = vec4(((color.rgb*contrastMult)+contrastAdd)+noiseGray, 1.0);
 }

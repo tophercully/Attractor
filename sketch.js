@@ -53,7 +53,7 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
   if(isFxpreview == true || isMobile == true) {
     pixelDensity(1)
   } else {
-    pixelDensity(4)
+    pixelDensity(3)
   }
 
   p = createGraphics(w, h)
