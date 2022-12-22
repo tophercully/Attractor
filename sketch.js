@@ -10,6 +10,7 @@ function preload() {
 //declarations
 textured = true
 shadeSeed = randomVal(0, 10)
+nSeed = randomInt(1, 100000000000000000)
 
 //parameters
 numColors = truePal.length
@@ -52,7 +53,7 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
   if(isFxpreview == true || isMobile == true) {
     pixelDensity(1)
   } else {
-    pixelDensity(3)
+    pixelDensity(5)
   }
 
   p = createGraphics(w, h)
@@ -67,6 +68,8 @@ function draw() {
 
   if(frameCount == 1) {
     //Prep
+    noiseSeed(nSeed)
+    randomSeed(nSeed)
     background(bgc)
     p.background('white')
     gradLUT()
